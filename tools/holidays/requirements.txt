@@ -1,0 +1,14 @@
+# Build-time only (nothing of this ends up in the ROM).
+# Holiday data:
+holidays==0.107
+python-dateutil==2.9.0.post0
+# Astronomy (astro.py), MIT/public domain:
+skyfield==1.55
+naif-de440==2020.12.21.1
+jplephem==2.24
+numpy==2.5.4
+# Optional cross-check (verify_astro.py --ephem), LGPL, never shipped:
+# ephem==4.2.1
+# Optional GBA timing estimate (tests/holidays/gba_timing.py):
+# unicorn==2.1.4
+# pyelftools
