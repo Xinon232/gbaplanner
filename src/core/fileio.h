@@ -21,6 +21,17 @@ extern FIL g_fil[IO_SLOTS];
 extern uint8_t g_iobuf[IO_SLOTS][IO_CHUNK];
 
 Err fr_err(FRESULT r);
+
+// A file's size as the core keeps it (32 bits). On exFAT a file can be
+// 4 GiB or larger: such a size reads as 0xFFFFFFFF, so every size check
+// says too large, instead of wrapping to the size modulo 4 GiB (a 4 GiB +
+// 100 byte calendar.txt would load as 100 bytes and a save would cut it).
+inline uint32_t size32(FSIZE_t n) {
+#if FF_FS_EXFAT
+  if (n > FSIZE_t(0xFFFFFFFFu)) return 0xFFFFFFFFu;
+#endif
+  return uint32_t(n);
+}
 void path_join(char* out, const char* dir, const char* name);
 
 class Reader {

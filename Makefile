@@ -1,5 +1,5 @@
 #---------------------------------------------------------------------------------------------------------------------
-# gbaplanner 10.0 (calendar and to-do list)
+# gbaplanner 11.0 (calendar and to-do list)
 #
 # Stack: Butano + devkitPro devkitARM, C++ (like gbawriter / gbavocab / gbareader).
 #

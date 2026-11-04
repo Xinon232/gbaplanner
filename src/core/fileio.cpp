@@ -30,7 +30,7 @@ Err Reader::open(const char* path, uint32_t* size) {
   err_ = fr_err(f_open(f_, path, FA_READ));
   if (err_ != Err::OK) return err_;
   open_ = true;
-  size_ = uint32_t(f_size(f_));
+  size_ = size32(f_size(f_));
   pos_ = len_ = idx_ = 0;
   if (size) *size = size_;
   return Err::OK;
@@ -166,7 +166,7 @@ Err file_size(const char* path, uint32_t* size, bool* exists) {
   if (r == FR_NO_FILE || r == FR_NO_PATH) return Err::OK;
   if (r != FR_OK) return fr_err(r);
   *exists = true;
-  if (size) *size = uint32_t(fi.fsize);
+  if (size) *size = size32(fi.fsize);
   return Err::OK;
 }
 

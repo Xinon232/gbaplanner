@@ -9,7 +9,6 @@
 
 #include "app/app_state.h"
 #include "app/calendar_screen.h"
-#include "app/key_latch.h"
 #include "app/screen.h"
 
 extern "C" {
@@ -30,7 +29,7 @@ constexpr unsigned HOLD_LINES = 60 * 228 - 8;
 
 volatile uint16_t& reg16(uintptr_t at) { return *reinterpret_cast<volatile uint16_t*>(at); }
 
-// KEYINPUT (0 = down) read here: keys::held_now() lives in IWRAM.
+// KEYINPUT (0 = down), read directly: Butano's interrupts are off here.
 bool start_down() { return !(reg16(0x04000130) & keys::START); }
 
 // START stays down for HOLD_LINES scanlines (VCOUNT keeps counting with
@@ -64,7 +63,7 @@ void sleep_until_start()
     bn::core::update();
     while(bn::keypad::held(bn::keypad::key_type::START)) bn::core::update();
     {
-        // Butano's interrupts (VBlank and the key latch with it, audio,
+        // Butano's interrupts (VBlank, audio,
         // HDMA) off; the display blanked; the keypad interrupt on START.
         bn::core_lock lock;
         reg16(0x04000000) |= 0x80;
@@ -86,9 +85,8 @@ void sleep_until_start()
         reg16(0x04000202) = 1u << IRQ_KEYPAD;
         // ~core_lock: interrupts back, the next VBlank, the display on.
     }
-    // The latch afresh: what is held now (START) is no press, and the
-    // changes queued around the sleep (L+R let go) are dropped.
-    keys::start_latch();
+    // The held START is seen as a press at the next bn::core::update: the
+    // guard ignores it and every other key until all have been up a moment.
     screens::guard();
 }
 

@@ -21,9 +21,14 @@
 // (typing), question.cpp, settings_screen.cpp; accessors in screens.h.
 #include <cstdint>
 #include "app/canvas.h"
-#include "app/key_latch.h"
 
 namespace app {
+
+namespace keys {
+// Keys as KEYINPUT has them (1 = held).
+constexpr unsigned A = 1, B = 2, SELECT = 4, START = 8, RIGHT = 16, LEFT = 32, UP = 64, DOWN = 128,
+                   R = 256, L = 512, ALL = 1023;
+}
 
 // One frame of keys (app::keys::A ...).
 struct Input {

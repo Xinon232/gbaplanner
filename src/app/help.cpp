@@ -59,14 +59,14 @@ constexpr Page settings[] = {
 // Credits: the personal page first, then the licence and each part made by
 // others with its licence (gbawriter / gbavocab order).
 constexpr Page credits[] = {
-    {"About", {"gbaplanner 10.0", "(c) 2026 Halim Jarrar", "GPL-3.0-or-later", "No warranty.", "#Source",
+    {"About", {"gbaplanner 11.0", "(c) 2026 Halim Jarrar", "GPL-3.0-or-later", "No warranty.", "#Source",
                "github.com/Xinon232/gbaplanner", "halimj.itch.io", "gba@halim-jarrar.de"}},
     {"License", {"gbaplanner is free software:", "you can share and change it", "under the GNU GPL, version 3",
                  "or (at your option) later.", "It comes with no warranty.", "#Parts made by others",
                  "Their names and licenses are", "on the next pages."}},
     {"Text and fonts", {"#Text renderer", "SuperFW by David Guillen Fandos", "License: GPL 3.0 or later", "#Fonts",
                         "UNSCII by Viznut: GPL", "GNU Unifont (also Hangul):", "GPL 2.0 or later",
-                        "UI font: from gbamp3 (MIT)"}},
+                        "UI font: gbamp3 (GPL 3.0+)"}},
     {"SD card and files", {"#SD card driver: SuperCard", "SuperFW by David Guillen Fandos", "License: GPL 3.0 or later",
                            "#Omega and EverDrive drivers", "Halim Jarrar (GPL), after the",
                            "Omega kernel (Apache 2.0) and", "edio-gba by krikzz (MIT)",

@@ -1,12 +1,15 @@
 // gbaplanner: calendar and to-do list for the Game Boy Advance.
 // Start: white screen at once, the SD card (gbaSD + FatFs), the state, then
 // the calendar (with the to-do list on top when Settings > General > Start
-// screen says so). Every frame: the keys from the VBlank latch to the top screen,
-// which redraws the whole bitmap when it changed.
+// screen says so). Every frame: the keys as Butano's keypad read them in the
+// last bn::core::update to the top screen, which redraws the whole bitmap
+// when it changed. A key pressed and let go while the app was busy (SD card)
+// is not seen: presses are never queued and replayed.
 #include "bn_bg_palette_item.h"
 #include "bn_bg_palettes.h"
 #include "bn_color.h"
 #include "bn_core.h"
+#include "bn_keypad.h"
 #include "bn_palette_bitmap_bg_painter.h"
 #include "bn_palette_bitmap_bg_ptr.h"
 
@@ -14,7 +17,6 @@
 #include "app/calendar_screen.h"
 #include "app/canvas.h"
 #include "app/data.h"
-#include "app/key_latch.h"
 #include "app/question.h"
 #include "app/screens.h"
 #include "app/sd.h"
@@ -48,6 +50,30 @@ struct Display {
 
 Display* display_ptr = nullptr;
 
+// The keys of this frame (app::keys bits, KEYINPUT order) from bn::keypad.
+struct Keys {
+    unsigned held = 0, pressed = 0;
+    // Frames since the previous update (1 when the loop keeps up), so that
+    // hold timers count real time also when drawing or the card took longer.
+    unsigned frames = 1;
+};
+
+Keys read_keys()
+{
+    using bn::keypad::key_type;
+    constexpr key_type order[] = {key_type::A,     key_type::B,    key_type::SELECT, key_type::START,
+                                  key_type::RIGHT, key_type::LEFT, key_type::UP,     key_type::DOWN,
+                                  key_type::R,     key_type::L};
+    Keys k;
+    for(unsigned i = 0; i < sizeof(order) / sizeof(order[0]); ++i) {
+        if(bn::keypad::held(order[i])) k.held |= 1u << i;
+        if(bn::keypad::pressed(order[i])) k.pressed |= 1u << i;
+    }
+    const int missed = bn::core::last_missed_frames();
+    k.frames = missed <= 0 ? 1 : missed >= 29 ? 30 : unsigned(missed) + 1;
+    return k;
+}
+
 void busy(Display& d, const char* title, const char* text)
 {
     app::Canvas& c = d.begin();
@@ -72,7 +98,6 @@ int main()
     // the engine's default backdrop is black.
     bn::bg_palettes::set_transparent_color(bn::color(31, 31, 31));
     bn::core::update();
-    app::keys::start_latch();
 
     Display display;
     display_ptr = &display;
@@ -96,8 +121,8 @@ int main()
     int note_frames = note ? 180 : 0;
 
     while(true) {
-        const app::keys::Frame f = app::keys::latch().next();
-        bool draw = app::screens::frame(f.held, f.pressed, f.frames);
+        const Keys k = read_keys();
+        bool draw = app::screens::frame(k.held, k.pressed, k.frames);
         if(note_frames) {
             if(note_frames == 180 || note_frames == 1) draw = true;
             --note_frames;

@@ -1,32 +1,17 @@
 The UI font glyphs are the 5x7 drawings from the gbamp3 player v0.9.8
-(https://github.com/Xinon232/gbamp3, player/src/text.c), copied verbatim to
-tools/gbamp3_small_font/small_font.c. tools/build_ui_font.py compiles them and
-adds the ASCII characters gbamp3 leaves blank and the Spanish accented letters
-in the same style.
-
-MIT License
+(https://github.com/Xinon232/gbamp3, player/src/text.c), by Halim Jarrar.
+references/fonts/gbamp3_small.bmp holds them (gbavocab's ui_font, with the
+ASCII characters gbamp3 leaves blank and the Spanish accented letters added
+in the same style); tools/build_ui_fonts.py turns it into
+include/app/ui_font_data.h.
 
 Copyright (c) 2026 Halim Jarrar
 
-Applies to independently authored player/src, player/build.py, player/player.ld,
-player/tools, and test/observer infrastructure except explicitly identified
-Helix-derived files and third-party files. Existing contributor notices remain.
-This does not relicense the Helix decoder, FatFS, or libgba-derived driver.
+This font is free software: you can redistribute it and/or modify it under
+the terms of the GNU General Public License as published by the Free Software
+Foundation, either version 3 of the License, or (at your option) any later
+version. It is distributed WITHOUT ANY WARRANTY; without even the implied
+warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. The full
+licence text is in LICENSE at the root of this repository.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
-of the Software, and to permit persons to whom the Software is furnished to do
-so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SPDX-License-Identifier: GPL-3.0-or-later

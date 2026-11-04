@@ -293,4 +293,12 @@
 
 
 
+/* gbaSD (gbasd/fatfs/ff.h, docs/fatfs.md change 8): a 4-sector (2 KiB)
+/  buffer for the exFAT allocation bitmap read-ahead, f_getfree and the zeros
+/  of a new folder's cluster (written 4 sectors per call instead of one: much
+/  faster on cards with large clusters). In EWRAM (.sbss), not IWRAM. */
+#define GBASD_FF_MULTI_BUF	4
+#define GBASD_FF_MULTI_BUF_ATTR	__attribute__((section(".sbss")))
+
+
 /*--- End of configuration options ---*/

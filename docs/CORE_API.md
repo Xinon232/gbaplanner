@@ -41,7 +41,11 @@ core_make_dirs();                  // creates /gbaplanner and GBAPLANNER.SYS
 // The app calls core_repair_dir("/gbaplanner/GBAPLANNER.SYS") right after
 // mounting, before f_mkdir (exFAT: entry sets a power cut left half written
 // in the root, /gbaplanner and GBAPLANNER.SYS, see "Safe save of a whole
-// file").
+// file"), then gbaSD's gbasd_alloc_hint() for GBAPLANNER.SYS, or for
+// /gbaplanner when that folder is not there yet (gbasd/fatfs/alloc_hint.h):
+// FatFs' search for a free cluster starts after the app's own files, not at
+// the start of the card (exFAT has no stored hint: on a nearly full 2 TiB
+// card the first save after a start read the whole allocation bitmap).
 LoadReport rep;
 Err e = cal_load(settings.cal_in_app ? Storage::IN_APP : Storage::TEXT, &rep);
 TodoReport trep;
